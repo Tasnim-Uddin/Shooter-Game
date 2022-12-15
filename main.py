@@ -28,13 +28,13 @@ grenade_thrown = False
 
 # load images
 # bullet
-bullet_img = pygame.image.load('img/icons/bullet.png').convert_alpha()
+bullet_img = pygame.image.load('images/icons/bullet.png').convert_alpha()
 # grenade
-grenade_img = pygame.image.load('img/icons/grenade.png').convert_alpha()
+grenade_img = pygame.image.load('images/icons/grenade.png').convert_alpha()
 # pick up boxes
-health_box_img = pygame.image.load('img/icons/health_box.png').convert_alpha()
-ammo_box_img = pygame.image.load('img/icons/ammo_box.png').convert_alpha()
-grenade_box_img = pygame.image.load('img/icons/grenade_box.png').convert_alpha()
+health_box_img = pygame.image.load('images/icons/health_box.png').convert_alpha()
+ammo_box_img = pygame.image.load('images/icons/ammo_box.png').convert_alpha()
+grenade_box_img = pygame.image.load('images/icons/grenade_box.png').convert_alpha()
 item_boxes = {
     'Health': health_box_img,
     'Ammo': ammo_box_img,
@@ -90,9 +90,9 @@ class Soldier(pygame.sprite.Sprite):
             # reset temporary list of images
             temp_list = []
             # count number of files in the folder
-            num_of_frames = len(os.listdir(f'img/{self.char_type}/{animation}'))
+            num_of_frames = len(os.listdir(f'images/{self.char_type}/{animation}'))
             for frame_index in range(num_of_frames):
-                img = pygame.image.load(f'img/{self.char_type}/{animation}/{frame_index}.png').convert_alpha()
+                img = pygame.image.load(f'images/{self.char_type}/{animation}/{frame_index}.png').convert_alpha()
                 img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
                 temp_list.append(img)
             self.animation_list.append(temp_list)
@@ -320,9 +320,9 @@ class Explosion(pygame.sprite.Sprite):
     def __init__(self, x, y, scale):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        num_of_frames = len(os.listdir(f'img/explosion'))
+        num_of_frames = len(os.listdir(f'images/explosion'))
         for frame in range(num_of_frames):
-            img = pygame.image.load(f'img/explosion/{frame}.png').convert_alpha()
+            img = pygame.image.load(f'images/explosion/{frame}.png').convert_alpha()
             img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
             self.images.append(img)
         self.frame_index = 0
