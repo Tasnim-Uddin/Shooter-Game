@@ -4,7 +4,11 @@ import os
 import random
 import pickle
 
+import sys
+sys.path.insert(1,
+                'C:\\Users\\Tas\\Documents\\College\\A levels\\Computer Science\\Coding\\Python\\Games\\Shooter\\game\\assets')
 import button
+
 
 pygame.init()
 mixer.init()
@@ -25,8 +29,8 @@ SCROLL_THRESH = 200
 ROWS = 16
 COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = len(os.listdir('images/tiles'))
-MAX_LEVELS = len(os.listdir('levels'))
+TILE_TYPES = len(os.listdir('assets/images/tiles'))
+MAX_LEVELS = len(os.listdir('assets/levels'))
 screen_scroll = 0
 background_scroll = 0
 level = 1
@@ -41,27 +45,27 @@ grenade = False
 grenade_thrown = False
 
 # load music and sounds
-pygame.mixer.music.load('audio/music2.mp3')
+pygame.mixer.music.load('assets/audio/music2.mp3')
 pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play(-1, 0.0, 5000)
-jump_fx = pygame.mixer.Sound('audio/jump.wav')
+jump_fx = pygame.mixer.Sound('assets/audio/jump.wav')
 jump_fx.set_volume(0.5)
-shot_fx = pygame.mixer.Sound('audio/shot.wav')
+shot_fx = pygame.mixer.Sound('assets/audio/shot.wav')
 shot_fx.set_volume(0.5)
-grenade_fx = pygame.mixer.Sound('audio/grenade.wav')
+grenade_fx = pygame.mixer.Sound('assets/audio/grenade.wav')
 grenade_fx.set_volume(0.5)
 
 # load images
 # button images
-start_img = pygame.image.load('images/buttons/start_button.png').convert_alpha()
-exit_img = pygame.image.load('images/buttons/exit_button.png').convert_alpha()
-restart_img = pygame.image.load('images/buttons/restart_button.png').convert_alpha()
+start_img = pygame.image.load('assets/images/buttons/start_button.png').convert_alpha()
+exit_img = pygame.image.load('assets/images/buttons/exit_button.png').convert_alpha()
+restart_img = pygame.image.load('assets/images/buttons/restart_button.png').convert_alpha()
 
 # background images
-pine1_img = pygame.image.load('images/background/pine1.png').convert_alpha()
-pine2_img = pygame.image.load('images/background/pine2.png').convert_alpha()
-mountain_img = pygame.image.load('images/background/mountain.png').convert_alpha()
-sky_img = pygame.image.load('images/background/sky_cloud.png').convert_alpha()
+pine1_img = pygame.image.load('assets/images/background/pine1.png').convert_alpha()
+pine2_img = pygame.image.load('assets/images/background/pine2.png').convert_alpha()
+mountain_img = pygame.image.load('assets/images/background/mountain.png').convert_alpha()
+sky_img = pygame.image.load('assets/images/background/sky_cloud.png').convert_alpha()
 
 pine1_img = pygame.transform.scale(pine1_img, (int(pine1_img.get_width() * 1.5), int(pine1_img.get_height() * 1.5)))
 pine2_img = pygame.transform.scale(pine2_img, (int(pine2_img.get_width() * 1.5), int(pine2_img.get_height() * 1.5)))
@@ -72,18 +76,18 @@ sky_img = pygame.transform.scale(sky_img, (int(sky_img.get_width() * 1.5), int(s
 # store tiles in a list
 img_list = []
 for current_tile in range(TILE_TYPES):
-    img = pygame.image.load(f'images/tiles/{current_tile}.png')
+    img = pygame.image.load(f'assets/images/tiles/{current_tile}.png')
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
 # bullet
-bullet_img = pygame.image.load('images/icons/bullet.png').convert_alpha()
+bullet_img = pygame.image.load('assets/images/icons/bullet.png').convert_alpha()
 # grenade
-grenade_img = pygame.image.load('images/icons/grenade.png').convert_alpha()
+grenade_img = pygame.image.load('assets/images/icons/grenade.png').convert_alpha()
 # pick up boxes
-health_box_img = pygame.image.load('images/icons/health_box.png').convert_alpha()
-ammo_box_img = pygame.image.load('images/icons/ammo_box.png').convert_alpha()
-grenade_box_img = pygame.image.load('images/icons/grenade_box.png').convert_alpha()
+health_box_img = pygame.image.load('assets/images/icons/health_box.png').convert_alpha()
+ammo_box_img = pygame.image.load('assets/images/icons/ammo_box.png').convert_alpha()
+grenade_box_img = pygame.image.load('assets/images/icons/grenade_box.png').convert_alpha()
 item_boxes = {
     'Health': health_box_img,
     'Ammo': ammo_box_img,
@@ -172,9 +176,9 @@ class Soldier(pygame.sprite.Sprite):
             # reset temporary list of images
             temp_list = []
             # count number of files in the folder
-            num_of_frames = len(os.listdir(f'images/{self.char_type}/{animation}'))
+            num_of_frames = len(os.listdir(f'assets/images/{self.char_type}/{animation}'))
             for frame_index in range(num_of_frames):
-                img = pygame.image.load(f'images/{self.char_type}/{animation}/{frame_index}.png').convert_alpha()
+                img = pygame.image.load(f'assets/images/{self.char_type}/{animation}/{frame_index}.png').convert_alpha()
                 img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
                 temp_list.append(img)
             self.animation_list.append(temp_list)
@@ -587,9 +591,9 @@ class Explosion(pygame.sprite.Sprite):
     def __init__(self, x, y, scale):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        num_of_frames = len(os.listdir(f'images/explosion'))
+        num_of_frames = len(os.listdir(f'assets/images/explosion'))
         for frame in range(num_of_frames):
-            img = pygame.image.load(f'images/explosion/{frame}.png').convert_alpha()
+            img = pygame.image.load(f'assets/images/explosion/{frame}.png').convert_alpha()
             img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
             self.images.append(img)
         self.frame_index = 0
@@ -627,9 +631,11 @@ class ScreenFade:
         self.fade_counter += self.speed
         if self.direction == 1:  # 1: whole screen fade outwards
             pygame.draw.rect(screen, self.colour, (0 - self.fade_counter, 0, SCREEN_WIDTH // 2, SCREEN_HEIGHT))
-            pygame.draw.rect(screen, self.colour, (SCREEN_WIDTH // 2 + self.fade_counter, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
+            pygame.draw.rect(screen, self.colour,
+                             (SCREEN_WIDTH // 2 + self.fade_counter, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
             pygame.draw.rect(screen, self.colour, (0, 0 - self.fade_counter, SCREEN_WIDTH, SCREEN_HEIGHT // 2))
-            pygame.draw.rect(screen, self.colour, (0, SCREEN_HEIGHT // 2 + self.fade_counter, SCREEN_WIDTH, SCREEN_HEIGHT))
+            pygame.draw.rect(screen, self.colour,
+                             (0, SCREEN_HEIGHT // 2 + self.fade_counter, SCREEN_WIDTH, SCREEN_HEIGHT))
         if self.direction == 2:  # 2: vertical screen fade down
             pygame.draw.rect(screen, self.colour, (0, 0, SCREEN_WIDTH, 0 + self.fade_counter))
         if self.fade_counter >= SCREEN_WIDTH:
@@ -662,7 +668,7 @@ for row in range(ROWS):
     r = [-1] * COLS
     world_data.append(r)
 # load in level data and create world
-pickle_in = open(f'levels/{level}_data', 'rb')
+pickle_in = open(f'assets/levels/{level}_data', 'rb')
 world_data = pickle.load(pickle_in)
 world = World()
 player, health_bar = world.process_data(data=world_data)
@@ -757,7 +763,7 @@ while run:
                 world_data = reset_level()
                 if level <= MAX_LEVELS:
                     # load in level data and create world
-                    pickle_in = open(f'levels/{level}_data', 'rb')
+                    pickle_in = open(f'assets/levels/{level}_data', 'rb')
                     world_data = pickle.load(pickle_in)
                     world = World()
                     player, health_bar = world.process_data(data=world_data)
@@ -771,7 +777,7 @@ while run:
                     background_scroll = 0
                     world_data = reset_level()
                     # load in level data and create world
-                    pickle_in = open(f'levels/{level}_data', 'rb')
+                    pickle_in = open(f'assets/levels/{level}_data', 'rb')
                     world_data = pickle.load(pickle_in)
                     world = World()
                     player, health_bar = world.process_data(data=world_data)
